@@ -1,0 +1,17 @@
+[
+  { "medio": "Tenfield", "titulo": "Uruguay le ganó 2-0 a Brasil en el Centenario y se clasificó al Mundial", "resumen": "La Celeste selló su pasaje con goles en el segundo tiempo ante un estadio lleno.", "esperado": true },
+  { "medio": "Montevideo Portal", "titulo": "Peñarol se consagró campeón uruguayo tras vencer a Nacional en la final", "resumen": "Los hinchas aurinegros salieron a festejar a la Plaza Fabini y a la avenida 18 de Julio.", "esperado": true },
+  { "medio": "Subrayado", "titulo": "Nacional ganó el clásico y es el nuevo campeón del Torneo Clausura", "resumen": "El tricolor se impuso 1-0 y los festejos se trasladaron al Parque Central.", "esperado": true },
+  { "medio": "la diaria", "titulo": "El Frente Amplio ganó el balotaje y Yamandú Orsi es el presidente electo", "resumen": "Miles de simpatizantes se concentraron en la rambla para celebrar el resultado.", "esperado": true },
+  { "medio": "Tenfield", "titulo": "Liverpool campeón del Torneo Intermedio: fiesta en Belvedere", "resumen": "El negriazul venció en la final y sus hinchas celebraron en el barrio.", "esperado": true },
+  { "medio": "Teledoce", "titulo": "Aguada es campeón de la Liga Uruguaya de Básquetbol", "resumen": "El aguatero ganó la serie final y sus hinchas festejaron en Goes.", "esperado": true },
+  { "medio": "Montevideo Portal", "titulo": "Montevideo recibió el Año Nuevo con fuegos artificiales en la rambla", "resumen": "Miles de personas se reunieron en la costa para celebrar la llegada del nuevo año.", "esperado": true },
+  { "medio": "Tenfield", "titulo": "Mañana juega Uruguay ante Argentina: la probable formación", "resumen": "El entrenador definirá el equipo tras el último entrenamiento en el Complejo Celeste.", "esperado": false },
+  { "medio": "Montevideo Portal", "titulo": "Suba del dólar: la moneda estadounidense cerró en alza", "resumen": "El billete verde subió 0,8% en el mercado local.", "esperado": false },
+  { "medio": "Subrayado", "titulo": "Alerta naranja por tormentas fuertes en cinco departamentos", "resumen": "Inumet advirtió por lluvias intensas, ráfagas de viento y posible caída de granizo.", "esperado": false },
+  { "medio": "Subrayado", "titulo": "Falleció un bebé en un siniestro de tránsito en Canelones", "resumen": "El accidente ocurrió en la ruta 8 y quedó registrado por una cámara de videovigilancia.", "esperado": false },
+  { "medio": "la diaria", "titulo": "El Parlamento discute la reforma de la seguridad social", "resumen": "La comisión recibió a delegaciones de trabajadores y empresarios.", "esperado": false },
+  { "medio": "Teledoce", "titulo": "Encuestas muestran empate técnico a una semana de las elecciones", "resumen": "Las consultoras coinciden en que el resultado se definirá por pocos votos.", "esperado": false },
+  { "medio": "Tenfield", "titulo": "Comienza la venta de entradas para Uruguay ante Colombia", "resumen": "Las localidades estarán disponibles desde el lunes en las redes de cobranza.", "esperado": false },
+  { "medio": "Tenfield", "titulo": "Uruguay perdió 1-0 con Paraguay y complica su clasificación", "resumen": "La Celeste no pudo revertir el gol de visitante y quedó fuera de zona de clasificación.", "esperado": false }
+]

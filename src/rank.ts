@@ -1,5 +1,5 @@
 import { score } from "@typesafe-ai/sdk";
-import { FRESCURA_PLENA_MS, MAX_CAUSAS, PUNTAJE_MINIMO, VENTANA_CANDIDATAS_MS } from "./config";
+import { FRESCURA_PLENA_MS, MAX_CAUSAS, PUNTAJE_MINIMO, TIMEOUT_ETAPA_B_MS, VENTANA_CANDIDATAS_MS } from "./config";
 import { isoUY } from "./tiempo";
 import type { Candidata, Causa, Juez } from "./tipos";
 
@@ -49,10 +49,13 @@ export async function rankear(juez: Juez, ubicacion: string, candidatas: Candida
   let cercanias: number[];
   let aproximado = false;
   try {
-    const { answers } = await juez.systemOne({
-      state: stateB(ubicacion, candidatas, ahora),
-      questions: preguntasB(candidatas.length),
-    });
+    const { answers } = await juez.systemOne(
+      {
+        state: stateB(ubicacion, candidatas, ahora),
+        questions: preguntasB(candidatas.length),
+      },
+      { timeout: TIMEOUT_ETAPA_B_MS, retry: { maxRetries: 0 } },
+    );
     cercanias = candidatas.map((_, i) => answers[`cerca_${i}`]?.score ?? 0);
   } catch (error) {
     console.warn("[rank] TypeSafe falló, uso puntaje sin ubicación:", error instanceof Error ? error.message : error);

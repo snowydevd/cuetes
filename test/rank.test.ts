@@ -63,6 +63,7 @@ describe("rankear", () => {
 
     expect(pedidos).toHaveLength(1);
     expect(pedidos[0]!.state.usuario.ubicacion).toBe("Pocitos, Montevideo");
+    expect(pedidos[0]!.opciones).toEqual({ timeout: 2500, retry: { maxRetries: 0 } });
     expect(r.aproximado).toBe(false);
     expect(r.causas.map((c) => [c.titulo, c.puntaje])).toEqual([
       ["A", 0.9],

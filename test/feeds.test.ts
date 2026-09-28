@@ -45,6 +45,13 @@ describe("parsearFeed", () => {
     });
   });
 
+  test("fecha ISO sin zona horaria se interpreta como hora de Uruguay (-03:00)", () => {
+    const ahora = Date.parse("2026-09-29T02:00:00Z"); // posterior a las 22:50 UY = 01:50Z
+    const xml = `<rss><channel><item><title>T</title><link>https://ejemplo.uy/uy-sin-tz</link>
+      <pubDate>2026-09-28T22:50:00</pubDate></item></channel></rss>`;
+    expect(parsearFeed(xml, "X", ahora)[0]!.publicadoEn).toBe(Date.parse("2026-09-29T01:50:00Z"));
+  });
+
   test("fecha futura se recorta a la hora de ingreso", () => {
     const xml = `<rss><channel><item><title>Futuro</title><link>https://ejemplo.uy/f</link>
       <pubDate>Fri, 01 Jan 2027 00:00:00 -0300</pubDate></item></channel></rss>`;

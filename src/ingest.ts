@@ -1,4 +1,4 @@
-import { CONCURRENCIA_EVALUACION } from "./config";
+import { CONCURRENCIA_EVALUACION, RETENCION_MS } from "./config";
 import { evaluarNoticia } from "./evaluate";
 import { descargarTodos, type Feed, type Fetcher } from "./feeds";
 import type { Store } from "./store";
@@ -26,7 +26,9 @@ export function crearIngestor(deps: DepsIngestor): Ingestor {
     corriendo = true;
     try {
       const t = ahora();
-      const nuevas = deps.store.insertar(await descargarTodos(deps.feeds, deps.fetcher, t), t);
+      const descargadas = await descargarTodos(deps.feeds, deps.fetcher, t);
+      const vigentes = descargadas.filter((n) => n.publicadoEn >= t - RETENCION_MS);
+      const nuevas = deps.store.insertar(vigentes, t);
       let evaluadas = 0;
       let fallidas = 0;
       await enParalelo(deps.store.pendientes(t), CONCURRENCIA_EVALUACION, async (noticia) => {

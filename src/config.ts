@@ -16,8 +16,12 @@ export const MAX_CAUSAS = 3;
 export const CONCURRENCIA_EVALUACION = 4;
 export const MAX_INTENTOS_EVALUACION = 3;
 
+export const TIMEOUT_ETAPA_B_MS = 2_500;
+
 export const FEED_TIMEOUT_MS = 10_000;
 export const MAX_RESUMEN = 600;
 
 export const PUERTO = Number(process.env.PORT ?? 3000);
 export const DB_PATH = process.env.CUETES_DB ?? "cuetes.db";
+
+export const MAX_UBICACION = 120;

@@ -24,12 +24,21 @@ describe("POST /api/cuetes", () => {
     ["ubicacion no string", { usuario: { ubicacion: 42 } }],
     ["ubicacion solo espacios", { usuario: { ubicacion: "   " } }],
     ["body null", "null"],
+    ["ubicacion demasiado larga", { usuario: { ubicacion: "x".repeat(121) } }],
   ])("400 con %s y sin llamar a TypeSafe", async (_, body) => {
     const { juez, pedidos } = juezFalso(() => ({}));
     const res = await crearHandlers({ store, juez, ultimaIngesta: () => null, ahora: () => AHORA }).cuetes(post(body));
     expect(res.status).toBe(400);
     expect(await res.json()).toHaveProperty("error");
     expect(pedidos).toHaveLength(0);
+  });
+
+  test("ubicacion de exactamente 120 caracteres se acepta", async () => {
+    const { juez } = juezFalso(() => ({}));
+    const res = await crearHandlers({ store, juez, ultimaIngesta: () => null, ahora: () => AHORA }).cuetes(
+      post({ usuario: { ubicacion: "x".repeat(120) } }),
+    );
+    expect(res.status).toBe(200);
   });
 
   test("sin candidatas responde causas vacías sin llamar a TypeSafe", async () => {
@@ -91,5 +100,22 @@ describe("servir", () => {
     const otra = await fetch(new URL("/otra", servidor.url));
     expect(otra.status).toBe(404);
     expect(await otra.json()).toEqual({ error: "No encontrado" });
+  });
+
+  test("una excepción inesperada responde 500 en JSON, no HTML con stack", async () => {
+    const { juez } = juezFalso(() => ({}));
+    const storeRota = {
+      candidatas: () => {
+        throw new Error("boom");
+      },
+    } as unknown as Store;
+    servidor = servir(crearHandlers({ store: storeRota, juez, ultimaIngesta: () => null }), 0);
+
+    const res = await fetch(new URL("/api/cuetes", servidor.url), {
+      method: "POST",
+      body: JSON.stringify({ usuario: { ubicacion: "Salto" } }),
+    });
+    expect(res.status).toBe(500);
+    expect(await res.json()).toEqual({ error: "Error interno" });
   });
 });

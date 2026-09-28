@@ -1,4 +1,4 @@
-import { MAX_CANDIDATAS_CONSULTA } from "./config";
+import { MAX_CANDIDATAS_CONSULTA, MAX_UBICACION } from "./config";
 import { rankear } from "./rank";
 import type { Store } from "./store";
 import { isoUY } from "./tiempo";
@@ -29,6 +29,9 @@ export function crearHandlers(deps: DepsServidor) {
         return error400("usuario.ubicacion es requerido");
       }
       const ubicacion = ubicacionCruda.trim();
+      if (ubicacion.length > MAX_UBICACION) {
+        return error400("usuario.ubicacion es demasiado larga");
+      }
       const t = ahora();
       const { causas, aproximado } = await rankear(
         deps.juez,
@@ -61,5 +64,9 @@ export function servir(handlers: ReturnType<typeof crearHandlers>, puerto: numbe
       "/api/health": { GET: () => handlers.health() },
     },
     fetch: () => Response.json({ error: "No encontrado" }, { status: 404 }),
+    error: (error) => {
+      console.error("[server] error:", error);
+      return Response.json({ error: "Error interno" }, { status: 500 });
+    },
   });
 }

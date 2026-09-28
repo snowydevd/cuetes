@@ -26,14 +26,14 @@ export function candidata(parcial: Partial<Candidata> = {}): Candidata {
   return { ...noticia(), ...evaluacion(), ...parcial };
 }
 
-export type Pedido = { state: any; questions: Record<string, unknown> };
+export type Pedido = { state: any; questions: Record<string, unknown>; opciones?: unknown };
 
 /** Cliente TypeSafe falso: registra los pedidos y responde con `responder` (o lanza lo que lance). */
 export function juezFalso(responder: (pedido: Pedido) => Record<string, unknown>) {
   const pedidos: Pedido[] = [];
   const juez = {
-    systemOne: async (pedido: Pedido) => {
-      pedidos.push(pedido);
+    systemOne: async (pedido: Pedido, opciones?: unknown) => {
+      pedidos.push({ ...pedido, opciones });
       return { model: "falso", answers: responder(pedido), usage: { input_tokens: 0, output_tokens: 0 } };
     },
   } as unknown as Juez;

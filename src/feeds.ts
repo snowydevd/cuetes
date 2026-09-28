@@ -75,9 +75,19 @@ function enlace(item: Nodo): string {
   return "";
 }
 
+// Fecha-hora ISO sin offset ni "Z", p. ej. "2026-09-28T22:50:00" o "2026-09-28 22:50:00".
+const ISO_SIN_ZONA = /^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/;
+
+function parsearFechaTexto(texto: string): number {
+  const t = texto.trim();
+  // Sin zona horaria: se asume que el feed publica en hora de Uruguay (-03:00), no la del servidor.
+  if (ISO_SIN_ZONA.test(t)) return Date.parse(`${t.replace(" ", "T")}-03:00`);
+  return Date.parse(t);
+}
+
 function fecha(item: Nodo, ahora: number): number {
   for (const campo of ["pubDate", "published", "updated", "dc:date"]) {
-    const ms = Date.parse(texto(item[campo]));
+    const ms = parsearFechaTexto(texto(item[campo]));
     if (!Number.isNaN(ms)) return Math.min(ms, ahora);
   }
   return ahora;

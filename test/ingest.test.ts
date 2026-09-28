@@ -48,6 +48,21 @@ test("si TypeSafe falla, la noticia queda pendiente y suma un intento", async ()
   expect(store.pendientes(AHORA)).toHaveLength(0); // 3 intentos agotados
 });
 
+test("descarta noticias de más de 48 h sin insertarlas", async () => {
+  const fetcherVieja: Fetcher = async () =>
+    new Response(
+      `<rss><channel><item><title>Vieja</title><link>https://ejemplo.uy/vieja</link>
+        <pubDate>${new Date(AHORA - 49 * 60 * 60 * 1000).toUTCString()}</pubDate>
+        <description>Vieja</description></item></channel></rss>`,
+    );
+  const { juez } = juezFalso(() => RESPUESTA_A);
+  const ingestor = crearIngestor({ store, juez, feeds, fetcher: fetcherVieja, ahora: () => AHORA });
+
+  expect(await ingestor.correr()).toEqual({ nuevas: 0, evaluadas: 0, fallidas: 0, purgadas: 0 });
+  expect(store.pendientes(AHORA)).toHaveLength(0);
+  expect(store.candidatas(AHORA, 10)).toHaveLength(0);
+});
+
 test("no corre dos ingestas a la vez", async () => {
   const { juez } = juezFalso(() => RESPUESTA_A);
   const ingestor = crearIngestor({ store, juez, feeds, fetcher, ahora: () => AHORA });

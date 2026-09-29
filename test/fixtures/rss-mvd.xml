@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+  <title>Montevideo Portal</title>
+  <item>
+    <title><![CDATA[Peñarol campeón del Clausura: festejos en todo Montevideo]]></title>
+    <link>https://www.montevideo.com.uy/auc.aspx?976768</link>
+    <description><![CDATA[<a href="https://www.montevideo.com.uy/auc.aspx?976768"><img border="0" src="https://imagenes.montevideo.com.uy/x.jpg" /></a><br /><br/>Los hinchas salieron a la calle &amp; tiraron cuetes.]]></description>
+    <pubDate>Mon, 28 Sep 2026 22:50:00 -0300</pubDate>
+  </item>
+  <item>
+    <title>Suba del dólar</title>
+    <link>https://www.montevideo.com.uy/auc.aspx?976769&amp;utm_source=rss&amp;utm_medium=feed#arriba</link>
+    <description>El dólar cerró en alza.</description>
+    <pubDate>fecha rota</pubDate>
+  </item>
+  <item>
+    <title>Item sin link</title>
+    <description>No debería aparecer.</description>
+  </item>
+</channel>
+</rss>

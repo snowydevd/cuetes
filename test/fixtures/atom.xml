@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Feed Atom</title>
+  <entry>
+    <title type="html">Nacional gana el Intermedio</title>
+    <link rel="alternate" href="https://ejemplo.uy/nacional-intermedio"/>
+    <updated>2026-09-29T01:00:00Z</updated>
+    <summary>Festejos en el Parque Central.</summary>
+  </entry>
+</feed>

@@ -1,20 +1,20 @@
-console.log("Hello via Bun!");
-import { choice, TypeSafeClient } from "@typesafe-ai/sdk";
+import { Database } from "bun:sqlite";
+import { TypeSafeClient } from "@typesafe-ai/sdk";
+import { DB_PATH, INTERVALO_INGESTA_MS, PUERTO } from "./src/config";
+import { FEEDS } from "./src/feeds";
+import { crearIngestor } from "./src/ingest";
+import { crearHandlers, servir } from "./src/server";
+import { Store } from "./src/store";
 
-const client = new TypeSafeClient()
+if (!process.env.TYPESAFE_API_KEY) {
+  console.error("Falta TYPESAFE_API_KEY. Agregala al archivo .env (Bun lo carga automáticamente).");
+  process.exit(1);
+}
 
-const response = await client.systemOne({
-    state: {document: "i was charged twice. Please fix this ASAP"},
-    questions: {
-        category: choice("What is this ticket about?", {
-            billing: null,
-            technical: null,
-            other: null
-        })
-    }
-})
+const juez = new TypeSafeClient();
+const store = new Store(new Database(DB_PATH, { create: true }));
+const ingestor = crearIngestor({ store, juez, feeds: FEEDS, fetcher: fetch });
 
-console.log(response.answers.category.choice)
-
-
-
+ingestor.iniciar(INTERVALO_INGESTA_MS);
+const servidor = servir(crearHandlers({ store, juez, ultimaIngesta: ingestor.ultimaIngesta }), PUERTO);
+console.log(`cuetes escuchando en ${servidor.url}`);

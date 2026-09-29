@@ -70,6 +70,8 @@ Cada módulo tiene una responsabilidad y se testea de forma aislada.
 | `src/ingest.ts` | Ciclo del worker: feeds → store → evaluate pendientes → purgar. | feeds, store, evaluate |
 | `src/server.ts` | `Bun.serve` con `/api/cuetes` y `/api/health`; validación del body. | store, rank |
 | `src/config.ts` | Constantes ajustables (umbrales, ventanas, intervalo). | — |
+| `src/tipos.ts` | Tipos compartidos (`NoticiaCruda`, `EvaluacionA`, `Candidata`, `Causa`, `Juez`). | — |
+| `src/tiempo.ts` | Formato de fechas ISO en hora de Uruguay (UTC-3). | — |
 | `index.ts` | Arranque: valida la API key, abre la DB, inicia el worker y el servidor. | todos |
 
 El `TypeSafeClient` se inyecta en `evaluate` y `rank` para poder mockearlo en tests.
@@ -244,8 +246,18 @@ CREATE INDEX IF NOT EXISTS idx_noticias_publicado ON noticias(publicado_en);
 - Una corrida a la vez: si la anterior no terminó, se saltea.
 - Pasos: descargar todos los feeds en paralelo → insertar nuevas (dedup por URL) → evaluar
   pendientes de las últimas 6 h con concurrencia limitada (4 requests simultáneas) → purgar > 48 h.
-- Feeds iniciales: Montevideo Portal, El País, Ovación, El Observador, la diaria, Subrayado. Las URLs
-  se verifican durante la implementación; las que no funcionen se descartan y se documentan.
+- Feeds iniciales (verificados el 2026-09-28):
+
+  | Medio | URL |
+  |---|---|
+  | Montevideo Portal | `https://www.montevideo.com.uy/anxml.aspx?59` |
+  | la diaria | `https://ladiaria.com.uy/feeds/articulos/` |
+  | Subrayado | `https://www.subrayado.com.uy/rss/pages/home.xml` |
+  | Teledoce | `https://www.teledoce.com/feed/` |
+  | Tenfield (deportes) | `https://www.tenfield.com.uy/feed/` |
+
+  Descartados: El País y Ovación (403), El Observador (404), Google Noticias UY (mezcla noticias
+  no uruguayas y usa links de redirección).
 - Timeout por feed: 10 s.
 
 ## 8. Manejo de errores
